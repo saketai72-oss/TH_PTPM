@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ngăn không cho người dùng duyệt cấu trúc thư mục
+    Options -Indexes
+
+    # Nếu file hoặc thư mục tồn tại thực tế thì truy cập thẳng, không rewrite
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Điều hướng toàn bộ các request khác về index.php
+    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+</IfModule>

@@ -1,0 +1,7 @@
+# Tắt rewrite engine để phục vụ các tài nguyên tĩnh trực tiếp
+<IfModule mod_rewrite.c>
+    RewriteEngine Off
+</IfModule>
+
+# Ngăn duyệt danh mục thư mục
+Options -Indexes
