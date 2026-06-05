@@ -1,4 +1,7 @@
 <?php
+// Thiết lập header Content-Type UTF-8 cho toàn bộ trang
+header('Content-Type: text/html; charset=utf-8');
+
 // Bật hiển thị lỗi để phục vụ việc debug
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

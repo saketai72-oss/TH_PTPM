@@ -16,10 +16,12 @@ class Database {
             $db = new self();
             try {
                 self::$conn = new PDO(
-                    "mysql:host=" . $db->host . ";dbname=" . $db->db_name . ";charset=utf8",
+                    "mysql:host=" . $db->host . ";dbname=" . $db->db_name . ";charset=utf8mb4",
                     $db->username,
                     $db->password
                 );
+                // Thiết lập charset hoạt động ở mức session kết nối
+                self::$conn->exec("SET NAMES utf8mb4");
                 // Thiết lập chế độ báo lỗi ngoại lệ để dễ dàng phát hiện lỗi SQL
                 self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 // Thiết lập chế độ fetch mặc định là mảng kết hợp (Associative Array)
