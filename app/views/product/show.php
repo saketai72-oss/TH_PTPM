@@ -56,10 +56,12 @@
             <?php else: ?>
                 <button class="btn btn-secondary" style="cursor: not-allowed;" disabled>🚫 Đã hết hàng</button>
             <?php endif; ?>
-            <!-- Nút chỉnh sửa -->
-            <a href="<?php echo BASE_PATH; ?>/product/edit/<?php echo $product['id']; ?>" class="btn btn-secondary">Chỉnh sửa</a>
-            <!-- Nút xóa -->
-            <a href="<?php echo BASE_PATH; ?>/product/delete/<?php echo $product['id']; ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa hành tinh này không?');">Xóa hành tinh</a>
+            <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                <!-- Nút chỉnh sửa -->
+                <a href="<?php echo BASE_PATH; ?>/product/edit/<?php echo $product['id']; ?>" class="btn btn-secondary">Chỉnh sửa</a>
+                <!-- Nút xóa -->
+                <a href="<?php echo BASE_PATH; ?>/product/delete/<?php echo $product['id']; ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa hành tinh này không?');">Xóa hành tinh</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>

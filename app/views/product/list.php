@@ -18,7 +18,9 @@
             <p style="color: var(--text-secondary); margin-top: 0.5rem;">Kết quả tìm kiếm cho: <strong>"<?php echo htmlspecialchars($_GET['search']); ?>"</strong></p>
         <?php endif; ?>
     </div>
-    <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">+ Thêm hành tinh</a>
+    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">+ Thêm hành tinh</a>
+    <?php endif; ?>
 </div>
 
 <?php if (empty($products)): ?>
@@ -27,7 +29,9 @@
         <div class="empty-icon">🪐</div>
         <h2 class="empty-title">Không tìm thấy hành tinh nào</h2>
         <p class="empty-desc">Thử tìm kiếm với từ khóa khác hoặc bấm nút thêm mới dưới đây.</p>
-        <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">Thêm hành tinh mới</a>
+        <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">Thêm hành tinh mới</a>
+        <?php endif; ?>
     </div>
 <?php else: ?>
     <!-- Danh sách sản phẩm dạng lưới (Grid) -->
@@ -86,10 +90,12 @@
                             <?php endif; ?>
                             <!-- Xem chi tiết -->
                             <a href="<?php echo BASE_PATH; ?>/product/show/<?php echo $product['id']; ?>" class="action-link" title="Xem chi tiết">👁️</a>
-                            <!-- Chỉnh sửa -->
-                            <a href="<?php echo BASE_PATH; ?>/product/edit/<?php echo $product['id']; ?>" class="action-link" title="Chỉnh sửa">✏️</a>
-                            <!-- Xóa -->
-                            <a href="<?php echo BASE_PATH; ?>/product/delete/<?php echo $product['id']; ?>" class="action-link btn-delete-action" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">🗑️</a>
+                            <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                                <!-- Chỉnh sửa -->
+                                <a href="<?php echo BASE_PATH; ?>/product/edit/<?php echo $product['id']; ?>" class="action-link" title="Chỉnh sửa">✏️</a>
+                                <!-- Xóa -->
+                                <a href="<?php echo BASE_PATH; ?>/product/delete/<?php echo $product['id']; ?>" class="action-link btn-delete-action" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">🗑️</a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

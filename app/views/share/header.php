@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Quản lý Cửa hàng Công nghệ</title>
+    <title><?php echo isset($pageTitle) ? $pageTitle . " - CosmicStore" : "CosmicStore - Cửa hàng hành tinh vũ trụ"; ?></title>
     <!-- Nhúng Style CSS -->
     <link rel="stylesheet" href="<?php echo BASE_PATH; ?>/public/css/style.css">
 </head>
@@ -86,7 +86,19 @@
                     Giỏ hàng<?php if ($cartCount > 0): ?><span class="badge-cart-count"><?php echo $cartCount; ?></span><?php endif; ?>
                 </a>
                 <a href="<?php echo BASE_PATH; ?>/history" class="nav-link <?php echo $isHistoryModule ? 'active' : ''; ?>">Lịch sử</a>
-                <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">+ Thêm mới</a>
+                
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                        <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">+ Thêm mới</a>
+                    <?php endif; ?>
+                    <div class="user-menu">
+                        <div class="user-avatar"><?php echo mb_substr($_SESSION['fullname'], 0, 1, 'UTF-8'); ?></div>
+                        <span class="user-name"><?php echo htmlspecialchars($_SESSION['fullname']); ?></span>
+                        <a href="<?php echo BASE_PATH; ?>/account/logout" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; margin-left: 0.5rem;">Đăng xuất</a>
+                    </div>
+                <?php else: ?>
+                    <a href="<?php echo BASE_PATH; ?>/account/login" class="btn btn-secondary">Đăng nhập</a>
+                <?php endif; ?>
             </div>
         </div>
     </header>

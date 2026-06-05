@@ -58,3 +58,18 @@ CREATE TABLE IF NOT EXISTS `order_details` (
   FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table structure for users (Bài 4 - Xác thực người dùng)
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(255) NOT NULL UNIQUE,
+  `fullname` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(50) NOT NULL DEFAULT 'user',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Default accounts (admin / admin123, user / user123)
+INSERT INTO `users` (`username`, `fullname`, `password`, `role`) VALUES
+('admin', 'Quản trị viên', '$2y$10$.PgouZ8XfN8L760gAcopQORB5l3rsj2G3pxj/QGQmwLkS6IOnEJVG', 'admin'),
+('user', 'Người dùng thử', '$2y$10$KOW/fe3jiv.n0PTTOdDIhe0hm7MeEU.2fpdM39Aba68.KWdVvfq6.', 'user');

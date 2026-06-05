@@ -27,6 +27,12 @@ class CategoryController {
 
     // Thêm mới danh mục
     public function add() {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện chức năng này.";
+            header("Location: " . BASE_PATH . "/category");
+            exit();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $description = isset($_POST['description']) ? trim($_POST['description']) : '';
@@ -52,6 +58,12 @@ class CategoryController {
 
     // Chỉnh sửa danh mục
     public function edit($id) {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện chức năng này.";
+            header("Location: " . BASE_PATH . "/category");
+            exit();
+        }
+
         $category = $this->categoryModel->getById($id);
         if (!$category) {
             $_SESSION['error'] = "Không tìm thấy danh mục cần chỉnh sửa.";
@@ -84,6 +96,12 @@ class CategoryController {
 
     // Xóa danh mục (Kiểm tra ràng buộc đếm sản phẩm)
     public function delete($id) {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện chức năng này.";
+            header("Location: " . BASE_PATH . "/category");
+            exit();
+        }
+
         $category = $this->categoryModel->getById($id);
         if ($category) {
             // Kiểm tra số lượng sản phẩm liên kết

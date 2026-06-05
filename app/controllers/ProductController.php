@@ -42,6 +42,12 @@ class ProductController {
 
     // Thêm mới sản phẩm
     public function add() {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện chức năng này.";
+            header("Location: " . BASE_PATH . "/product");
+            exit();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $description = isset($_POST['description']) ? trim($_POST['description']) : '';
@@ -90,6 +96,12 @@ class ProductController {
 
     // Chỉnh sửa sản phẩm
     public function edit($id) {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện chức năng này.";
+            header("Location: " . BASE_PATH . "/product");
+            exit();
+        }
+
         $product = $this->productModel->getById($id);
         if (!$product) {
             $_SESSION['error'] = "Không tìm thấy sản phẩm cần chỉnh sửa.";
@@ -149,6 +161,12 @@ class ProductController {
 
     // Xóa sản phẩm
     public function delete($id) {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện chức năng này.";
+            header("Location: " . BASE_PATH . "/product");
+            exit();
+        }
+
         $product = $this->productModel->getById($id);
         if ($product) {
             // Kiểm tra xem hành tinh đã từng được đặt hàng chưa

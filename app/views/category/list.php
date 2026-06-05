@@ -3,7 +3,9 @@
         <h1 class="page-title">Quản Lý Danh Mục</h1>
         <p style="color: var(--text-secondary); margin-top: 0.5rem;">Thêm, chỉnh sửa và quản lý danh mục sản phẩm của cửa hàng.</p>
     </div>
-    <a href="<?php echo BASE_PATH; ?>/category/add" class="btn btn-primary">+ Thêm danh mục</a>
+    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <a href="<?php echo BASE_PATH; ?>/category/add" class="btn btn-primary">+ Thêm danh mục</a>
+    <?php endif; ?>
 </div>
 
 <?php if (empty($categories)): ?>
@@ -11,7 +13,9 @@
         <div class="empty-icon">📂</div>
         <h2 class="empty-title">Không tìm thấy danh mục nào</h2>
         <p class="empty-desc">Hệ thống chưa có danh mục sản phẩm nào, hãy bấm nút dưới đây để tạo mới.</p>
-        <a href="<?php echo BASE_PATH; ?>/category/add" class="btn btn-primary">Thêm danh mục mới</a>
+        <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <a href="<?php echo BASE_PATH; ?>/category/add" class="btn btn-primary">Thêm danh mục mới</a>
+        <?php endif; ?>
     </div>
 <?php else: ?>
     <!-- Bảng hiển thị danh sách danh mục -->
@@ -23,7 +27,9 @@
                     <th style="width: 250px;">Tên Danh Mục</th>
                     <th>Mô Tả Danh Mục</th>
                     <th style="width: 180px; text-align: center;">Số lượng sản phẩm</th>
-                    <th style="width: 150px; text-align: center;">Hành động</th>
+                    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                        <th style="width: 150px; text-align: center;">Hành động</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -45,14 +51,16 @@
                                 <?php echo $count; ?> sản phẩm
                             </span>
                         </td>
-                        <td style="text-align: center;">
-                            <div style="display: inline-flex; gap: 0.5rem; justify-content: center;">
-                                <!-- Nút Sửa -->
-                                <a href="<?php echo BASE_PATH; ?>/category/edit/<?php echo $category['id']; ?>" class="action-link" title="Chỉnh sửa">✏️</a>
-                                <!-- Nút Xóa -->
-                                <a href="<?php echo BASE_PATH; ?>/category/delete/<?php echo $category['id']; ?>" class="action-link btn-delete-action" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');">🗑️</a>
-                            </div>
-                        </td>
+                        <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                            <td style="text-align: center;">
+                                <div style="display: inline-flex; gap: 0.5rem; justify-content: center;">
+                                    <!-- Nút Sửa -->
+                                    <a href="<?php echo BASE_PATH; ?>/category/edit/<?php echo $category['id']; ?>" class="action-link" title="Chỉnh sửa">✏️</a>
+                                    <!-- Nút Xóa -->
+                                    <a href="<?php echo BASE_PATH; ?>/category/delete/<?php echo $category['id']; ?>" class="action-link btn-delete-action" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');">🗑️</a>
+                                </div>
+                            </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
