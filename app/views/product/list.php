@@ -1,36 +1,36 @@
 <?php if (!isset($_GET['search']) || empty($_GET['search'])): ?>
     <div class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">Khám Phá Hệ Mặt Trời Kỳ Vĩ</h1>
-            <p class="hero-subtitle">Sở hữu và khám phá những hành tinh tuyệt đẹp nhất trong vũ trụ bao la ngay hôm nay.</p>
+            <h1 class="hero-title">RenderToys - Đồ Chơi Trí Tuệ & Sáng Tạo</h1>
+            <p class="hero-subtitle">Mang đến không gian vui chơi bổ ích, phát triển tư duy sáng tạo và thể chất toàn diện cho bé yêu.</p>
             <div class="hero-buttons">
-                <a href="#planet-catalog" class="btn btn-primary">🪐 Khám phá ngay</a>
-                <a href="<?php echo BASE_PATH; ?>/category" class="btn btn-secondary">🛰️ Phân loại</a>
+                <a href="#toy-catalog" class="btn btn-primary">🧸 Khám phá ngay</a>
+                <a href="<?php echo BASE_PATH; ?>/category" class="btn btn-secondary">🧩 Phân loại đồ chơi</a>
             </div>
         </div>
     </div>
 <?php endif; ?>
 
-<div class="page-header" id="planet-catalog">
+<div class="page-header" id="toy-catalog">
     <div>
-        <h1 class="page-title">Hệ Mặt Trời & Các Hành Tinh</h1>
+        <h1 class="page-title">Danh Sách Đồ Chơi Cho Bé</h1>
         <?php if (isset($_GET['search']) && !empty($_GET['search'])): ?>
             <p style="color: var(--text-secondary); margin-top: 0.5rem;">Kết quả tìm kiếm cho: <strong>"<?php echo htmlspecialchars($_GET['search']); ?>"</strong></p>
         <?php endif; ?>
     </div>
     <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-        <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">+ Thêm hành tinh</a>
+        <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">+ Thêm đồ chơi mới</a>
     <?php endif; ?>
 </div>
 
 <?php if (empty($products)): ?>
     <!-- Trạng thái trống (Empty State) -->
     <div class="empty-state">
-        <div class="empty-icon">🪐</div>
-        <h2 class="empty-title">Không tìm thấy hành tinh nào</h2>
+        <div class="empty-icon">🧸</div>
+        <h2 class="empty-title">Không tìm thấy đồ chơi nào</h2>
         <p class="empty-desc">Thử tìm kiếm với từ khóa khác hoặc bấm nút thêm mới dưới đây.</p>
         <?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-            <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">Thêm hành tinh mới</a>
+            <a href="<?php echo BASE_PATH; ?>/product/add" class="btn btn-primary">Thêm đồ chơi mới</a>
         <?php endif; ?>
     </div>
 <?php else: ?>

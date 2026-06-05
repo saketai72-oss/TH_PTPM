@@ -12,7 +12,7 @@ class CategoryController {
         $categories = $this->categoryModel->getAll();
         
         // Ghi nhận hành động vào session
-        SessionLogger::log("Xem danh sách danh mục hành tinh");
+        SessionLogger::log("Xem danh sách danh mục đồ chơi");
 
         // Tạo một mảng lưu số lượng sản phẩm cho từng danh mục
         $productCounts = [];

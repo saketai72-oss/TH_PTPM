@@ -246,28 +246,18 @@
     }
 </style>
 
-<!-- Universe Background -->
-<div class="universe-bg"></div>
-<div class="stars-container" id="starsContainer"></div>
-<div class="nebula"></div>
-<div class="nebula nebula-2"></div>
-
-<!-- Planet decoration -->
-<div class="planet" style="top: 10%; left: -40px; width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #ff9966, #ff5e62);"></div>
-<div class="planet" style="bottom: 5%; right: -30px; width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #43c6ac, #191654); animation-duration: 25s;"></div>
-
-<div class="cart-content">
+<div class="cart-content" style="margin-top: 40px;">
     <div class="page-header">
-        <h1 class="page-title">🌌 Giỏ Hàng Của Bạn 🚀</h1>
+        <h1 class="page-title">🛒 Giỏ Hàng Của Bạn 🧸</h1>
         <a href="<?php echo BASE_PATH; ?>/product" class="btn btn-secondary">&larr; Tiếp tục mua sắm</a>
     </div>
 
     <?php if (empty($cartItems)): ?>
         <!-- Trạng thái giỏ hàng trống (Empty Cart) -->
         <div class="empty-state">
-            <div class="empty-icon">🌠</div>
+            <div class="empty-icon">🧸</div>
             <h2 class="empty-title">Giỏ hàng của bạn đang trống ✨</h2>
-            <p class="empty-desc">Bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng. Hãy lựa chọn các thiết bị công nghệ đỉnh cao của chúng tôi.</p>
+            <p class="empty-desc">Bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng. Hãy lựa chọn các bộ đồ chơi trẻ em sáng tạo và hấp dẫn của chúng tôi.</p>
             <a href="<?php echo BASE_PATH; ?>/product" class="btn btn-primary">🛍️ Mua sắm ngay</a>
         </div>
     <?php else: ?>
@@ -361,7 +351,7 @@
                     <!-- Số điện thoại -->
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label for="customer_phone" class="form-label">📱 Số điện thoại <span style="color:#ff6666">*</span></label>
-                        <input type="tel" id="customer_phone" name="customer_phone" class="form-control" placeholder="Ví dụ: 0987654321" required>
+                        <input type="tel" id="customer_phone" name="customer_phone" class="form-control" placeholder="Ví dụ: 0987654321" pattern="^(0|\+84)(3|5|7|8|9)\d{8}$" title="Số điện thoại phải bắt đầu bằng 0 hoặc +84, tiếp theo là 9 chữ số di động (ví dụ: 0987654321, +84987654321)." required>
                     </div>
 
                     <!-- Email -->
@@ -387,90 +377,4 @@
 
     <?php endif; ?>
 </div>
-
-<script>
-    // Create colorful floating stars
-    function createStars() {
-        const starsContainer = document.getElementById('starsContainer');
-        const colors = ['star-red', 'star-blue', 'star-green', 'star-yellow', 'star-purple', 'star-orange', 'star-pink', 'star-cyan'];
-        const starCount = 150;
-        
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            const colorClass = colors[Math.floor(Math.random() * colors.length)];
-            const size = Math.random() * 3 + 1;
-            const duration = Math.random() * 10 + 5;
-            const delay = Math.random() * 15;
-            const startX = Math.random() * window.innerWidth;
-            const drift = (Math.random() - 0.5) * 200;
-            
-            star.className = `star ${colorClass}`;
-            if (Math.random() > 0.7) {
-                star.classList.add('star-twinkle');
-            }
-            
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${startX}px`;
-            star.style.animationDuration = `${duration}s`;
-            star.style.animationDelay = `${delay}s`;
-            star.style.setProperty('--drift', `${drift}px`);
-            star.style.opacity = Math.random() * 0.7 + 0.3;
-            
-            starsContainer.appendChild(star);
-        }
-        
-        // Add shooting stars periodically
-        setInterval(() => {
-            const shootingStar = document.createElement('div');
-            shootingStar.className = 'shooting-star';
-            const startX = Math.random() * window.innerWidth;
-            const startY = Math.random() * window.innerHeight;
-            shootingStar.style.left = `${startX}px`;
-            shootingStar.style.top = `${startY}px`;
-            shootingStar.style.animationDuration = `${Math.random() * 2 + 2}s`;
-            document.body.appendChild(shootingStar);
-            
-            setTimeout(() => {
-                shootingStar.remove();
-            }, 3000);
-        }, 4000);
-    }
-    
-    // Create additional floating particles
-    function createFloatingParticles() {
-        const container = document.getElementById('starsContainer');
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.width = '2px';
-            particle.style.height = '2px';
-            particle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
-            particle.style.borderRadius = '50%';
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.top = `${Math.random() * 100}%`;
-            particle.style.animation = `floatStar ${Math.random() * 15 + 8}s linear infinite`;
-            particle.style.animationDelay = `${Math.random() * 20}s`;
-            particle.style.opacity = Math.random() * 0.5;
-            container.appendChild(particle);
-        }
-    }
-    
-    // Initialize stars when page loads
-    window.addEventListener('load', () => {
-        createStars();
-        createFloatingParticles();
-    });
-    
-    // Resize handling - regenerate stars on resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            const starsContainer = document.getElementById('starsContainer');
-            starsContainer.innerHTML = '';
-            createStars();
-            createFloatingParticles();
-        }, 500);
-    });
-</script>
+

@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1 class="page-title">Chi Tiết Hành Tinh</h1>
+    <h1 class="page-title">Chi Tiết Đồ Chơi</h1>
     <a href="<?php echo BASE_PATH; ?>/product" class="btn btn-secondary">&larr; Quay lại danh sách</a>
 </div>
 
@@ -38,7 +38,7 @@
         <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
             Tình trạng: 
             <?php if ($product['stock_quantity'] > 0): ?>
-                <span style="color: var(--success); font-weight: 700;">Còn hàng</span> (Còn <strong><?php echo $product['stock_quantity']; ?></strong> hành tinh trong kho)
+                <span style="color: var(--success); font-weight: 700;">Còn hàng</span> (Còn <strong><?php echo $product['stock_quantity']; ?></strong> sản phẩm trong kho)
             <?php else: ?>
                 <span style="color: var(--danger); font-weight: 700;">🚫 Hết hàng</span>
             <?php endif; ?>
@@ -52,7 +52,7 @@
         <div class="detail-actions">
             <!-- Nút thêm vào giỏ hàng -->
             <?php if ($product['stock_quantity'] > 0): ?>
-                <a href="<?php echo BASE_PATH; ?>/cart/add/<?php echo $product['id']; ?>" class="btn btn-primary" style="background: linear-gradient(135deg, var(--secondary) 0%, #0284c7 100%);">🛒 Thêm vào giỏ hàng</a>
+                <a href="<?php echo BASE_PATH; ?>/cart/add/<?php echo $product['id']; ?>" class="btn btn-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);">🛒 Thêm vào giỏ hàng</a>
             <?php else: ?>
                 <button class="btn btn-secondary" style="cursor: not-allowed;" disabled>🚫 Đã hết hàng</button>
             <?php endif; ?>
@@ -60,7 +60,7 @@
                 <!-- Nút chỉnh sửa -->
                 <a href="<?php echo BASE_PATH; ?>/product/edit/<?php echo $product['id']; ?>" class="btn btn-secondary">Chỉnh sửa</a>
                 <!-- Nút xóa -->
-                <a href="<?php echo BASE_PATH; ?>/product/delete/<?php echo $product['id']; ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa hành tinh này không?');">Xóa hành tinh</a>
+                <a href="<?php echo BASE_PATH; ?>/product/delete/<?php echo $product['id']; ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa đồ chơi</a>
             <?php endif; ?>
         </div>
     </div>

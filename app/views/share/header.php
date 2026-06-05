@@ -3,49 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($pageTitle) ? $pageTitle . " - CosmicStore" : "CosmicStore - Cửa hàng hành tinh vũ trụ"; ?></title>
+    <title><?php echo isset($pageTitle) ? $pageTitle . " - RenderToys" : "RenderToys - Cửa hàng đồ chơi trẻ em"; ?></title>
     <!-- Nhúng Style CSS -->
     <link rel="stylesheet" href="<?php echo BASE_PATH; ?>/public/css/style.css">
 </head>
 <body>
-    <!-- Stars Background Animation -->
-    <div class="stars-container" id="stars-container"></div>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const container = document.getElementById("stars-container");
-        if (!container) return;
-        const starCount = 80;
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement("div");
-            star.classList.add("star");
-            
-            // Random star size
-            const size = Math.random() * 2.5 + 0.5;
-            star.style.width = size + "px";
-            star.style.height = size + "px";
-            
-            // Random initial coordinates
-            star.style.left = Math.random() * 100 + "vw";
-            star.style.top = Math.random() * 100 + "vh";
-            
-            // Random drift duration
-            const duration = Math.random() * 30 + 20;
-            star.style.animationDuration = duration + "s";
-            
-            // Random start delay
-            star.style.animationDelay = Math.random() * -30 + "s";
-            
-            container.appendChild(star);
-        }
-    });
-    </script>
-
     <!-- Header & Navigation -->
     <header>
         <div class="nav-container">
             <a href="<?php echo BASE_PATH; ?>/product" class="logo">
-                <div class="logo-icon">🪐</div>
-                CosmicStore
+                <div class="logo-icon">🧸</div>
+                RenderToys
             </a>
             
             <!-- Thanh tìm kiếm sản phẩm nhanh -->
@@ -80,7 +48,7 @@
                 }
             ?>
             <div class="nav-links">
-                <a href="<?php echo BASE_PATH; ?>/product" class="nav-link <?php echo (!$isCategoryModule && !$isCartModule && !$isHistoryModule) ? 'active' : ''; ?>">Hành tinh</a>
+                <a href="<?php echo BASE_PATH; ?>/product" class="nav-link <?php echo (!$isCategoryModule && !$isCartModule && !$isHistoryModule) ? 'active' : ''; ?>">Đồ chơi</a>
                 <a href="<?php echo BASE_PATH; ?>/category" class="nav-link <?php echo $isCategoryModule ? 'active' : ''; ?>">Danh mục</a>
                 <a href="<?php echo BASE_PATH; ?>/cart" class="nav-link <?php echo $isCartModule ? 'active' : ''; ?>">
                     Giỏ hàng<?php if ($cartCount > 0): ?><span class="badge-cart-count"><?php echo $cartCount; ?></span><?php endif; ?>

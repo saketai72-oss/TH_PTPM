@@ -4,9 +4,12 @@ class CartController {
     private $productModel;
     private $orderModel;
 
+    private $cartModel;
+
     public function __construct() {
         $this->productModel = new ProductModel();
         $this->orderModel = new OrderModel();
+        $this->cartModel = new CartModel();
     }
 
     // Hiển thị giỏ hàng và form thanh toán
@@ -66,6 +69,12 @@ class CartController {
             $_SESSION['error'] = "Không thể thêm. Số lượng trong giỏ đã đạt giới hạn tồn kho (" . $product['stock_quantity'] . ") của sản phẩm này.";
         } else {
             $_SESSION['cart'][$id] = $currentQty + 1;
+            
+            // Đồng bộ với cơ sở dữ liệu nếu đã đăng nhập
+            if (isset($_SESSION['user_id'])) {
+                $this->cartModel->syncCart($_SESSION['user_id'], $_SESSION['cart']);
+            }
+            
             SessionLogger::log("Thêm vào giỏ hàng: " . $product['name'] . " (Số lượng: 1)");
             $_SESSION['success'] = "Đã thêm <strong>\"" . htmlspecialchars($product['name']) . "\"</strong> vào giỏ hàng!";
         }
@@ -102,6 +111,11 @@ class CartController {
                         }
                     }
                 }
+                // Đồng bộ với cơ sở dữ liệu nếu đã đăng nhập
+                if (isset($_SESSION['user_id'])) {
+                    $this->cartModel->syncCart($_SESSION['user_id'], $_SESSION['cart']);
+                }
+
                 if ($hasWarning) {
                     $_SESSION['warning'] = "Một số sản phẩm đã được tự động giới hạn theo số lượng tồn kho thực tế.";
                 } else {
@@ -118,6 +132,12 @@ class CartController {
     public function delete($id) {
         if (isset($_SESSION['cart'][$id])) {
             unset($_SESSION['cart'][$id]);
+            
+            // Đồng bộ với cơ sở dữ liệu nếu đã đăng nhập
+            if (isset($_SESSION['user_id'])) {
+                $this->cartModel->syncCart($_SESSION['user_id'], $_SESSION['cart']);
+            }
+            
             SessionLogger::log("Xóa sản phẩm khỏi giỏ hàng");
             $_SESSION['success'] = "Đã xóa sản phẩm khỏi giỏ hàng.";
         } else {
@@ -145,6 +165,14 @@ class CartController {
             // Kiểm tra thông tin nhập liệu bắt buộc
             if (empty($customer_name) || empty($customer_phone) || empty($customer_address) || empty($customer_email)) {
                 $_SESSION['error'] = "Vui lòng nhập đầy đủ thông tin thanh toán.";
+                header("Location: " . BASE_PATH . "/cart");
+                exit();
+            }
+
+            // Kiểm tra định dạng số điện thoại Việt Nam
+            $phonePattern = '/^(0|\+84)(3|5|7|8|9)\d{8}$/';
+            if (!preg_match($phonePattern, $customer_phone)) {
+                $_SESSION['error'] = "Số điện thoại không đúng định dạng. Vui lòng nhập số điện thoại Việt Nam hợp lệ (ví dụ: 0987654321 hoặc +84987654321).";
                 header("Location: " . BASE_PATH . "/cart");
                 exit();
             }
@@ -202,6 +230,11 @@ class CartController {
                 
                 // Xóa giỏ hàng sau khi đặt thành công
                 unset($_SESSION['cart']);
+                
+                // Xóa sạch giỏ hàng trong database nếu đã đăng nhập
+                if (isset($_SESSION['user_id'])) {
+                    $this->cartModel->clearCart($_SESSION['user_id']);
+                }
                 
                 SessionLogger::log("Đặt hàng thành công! Mã đơn hàng: " . $order_code);
                 $_SESSION['success'] = "Đặt hàng thành công! Mã đơn hàng của bạn là: <strong>" . $order_code . "</strong>";

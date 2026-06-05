@@ -3,8 +3,11 @@
 class AccountController {
     private $accountModel;
 
+    private $cartModel;
+
     public function __construct() {
         $this->accountModel = new AccountModel();
+        $this->cartModel = new CartModel();
     }
 
     // Trang Đăng nhập
@@ -29,6 +32,24 @@ class AccountController {
                     $_SESSION['fullname'] = $user['fullname'];
                     $_SESSION['role'] = $user['role'];
                     
+                    // Khôi phục giỏ hàng đã lưu trong database
+                    $dbCart = $this->cartModel->getCartByUserId($user['id']);
+                    if (!isset($_SESSION['cart'])) {
+                        $_SESSION['cart'] = [];
+                    }
+
+                    // Gộp giỏ hàng của guest (nếu có) và giỏ hàng của database
+                    foreach ($dbCart as $productId => $quantity) {
+                        if (isset($_SESSION['cart'][$productId])) {
+                            $_SESSION['cart'][$productId] += $quantity;
+                        } else {
+                            $_SESSION['cart'][$productId] = $quantity;
+                        }
+                    }
+
+                    // Đồng bộ lại giỏ hàng đã gộp vào database
+                    $this->cartModel->syncCart($user['id'], $_SESSION['cart']);
+
                     // Ghi nhận lịch sử
                     SessionLogger::log("Đăng nhập thành công tài khoản: " . $username);
                     
@@ -106,11 +127,12 @@ class AccountController {
             SessionLogger::log("Đăng xuất tài khoản: " . $_SESSION['username']);
         }
         
-        // Hủy các session liên quan đến thông tin đăng nhập
+        // Hủy các session liên quan đến thông tin đăng nhập và giỏ hàng
         unset($_SESSION['user_id']);
         unset($_SESSION['username']);
         unset($_SESSION['fullname']);
         unset($_SESSION['role']);
+        unset($_SESSION['cart']);
         
         $_SESSION['success'] = "Bạn đã đăng xuất tài khoản thành công.";
         header("Location: " . BASE_PATH . "/product");

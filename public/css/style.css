@@ -1,30 +1,30 @@
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* CSS Variables for Premium Dark Cosmic Theme */
+/* CSS Variables for Premium Monochrome Theme (White, Black, Grey) */
 :root {
-    --primary: #c084fc;        /* Glowing Purple */
-    --primary-hover: #e9d5ff;  /* Soft Purple Glow */
-    --primary-light: rgba(192, 132, 252, 0.15);
-    --secondary: #22d3ee;      /* Neon Cyan */
-    --background: #090915;     /* Deep Space Dark */
-    --surface: rgba(15, 15, 35, 0.65); /* Glassmorphism Semi-transparent */
-    --text-primary: #f8fafc;   /* Nebula White */
-    --text-secondary: #cbd5e1; /* Star Dust Silver */
-    --text-muted: #64748b;
-    --border: rgba(192, 132, 252, 0.25); /* Cosmic Border */
-    --border-hover: rgba(34, 211, 238, 0.5);
-    --success: #34d399;        /* Aurora Green */
-    --danger: #fb7185;         /* Red Giant */
-    --warning: #fbbf24;        /* Golden Star */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -4px rgba(0, 0, 0, 0.7);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 8px 10px -6px rgba(0, 0, 0, 0.8);
-    --radius-sm: 0.375rem;
-    --radius: 0.75rem;
-    --radius-lg: 1rem;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary: #ffffff;        /* White primary elements */
+    --primary-hover: #f4f4f5;  /* Off-white on hover */
+    --primary-light: rgba(255, 255, 255, 0.08);
+    --secondary: #27272a;      /* Dark Zinc/Grey */
+    --background: #09090b;     /* Deep Zinc Dark Background */
+    --surface: #18181b;        /* Zinc Card/Panel Background */
+    --text-primary: #fafafa;   
+    --text-secondary: #a1a1aa; /* Light Grey Text */
+    --text-muted: #71717a;     /* Muted Grey Text */
+    --border: rgba(255, 255, 255, 0.08); 
+    --border-hover: rgba(255, 255, 255, 0.25);
+    --success: #ffffff;        
+    --danger: #ef4444;         
+    --warning: #f59e0b;        
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.7);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.8);
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --transition: all 0.2s ease-out;
 }
 
 /* Reset styles */
@@ -35,12 +35,8 @@
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    /* Space Background image with a dark cosmic gradient overlay for contrast */
-    background-image: linear-gradient(rgba(9, 9, 21, 0.82), rgba(9, 9, 21, 0.94)), url('../bg_space.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--background);
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
@@ -81,26 +77,20 @@ header {
     gap: 0.5rem;
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 15px rgba(192, 132, 252, 0.3);
+    color: var(--text-primary);
 }
 
 .logo-icon {
     width: 2rem;
     height: 2rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: var(--text-primary);
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--background);
     font-weight: 800;
     font-size: 1.1rem;
-    -webkit-text-fill-color: white;
-    box-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
 }
 
 .nav-links {
@@ -190,15 +180,16 @@ footer {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(192, 132, 252, 0.25);
+    background: var(--primary);
+    color: #000000;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(192, 132, 252, 0.45);
-    color: white;
+    box-shadow: var(--shadow);
+    background: var(--primary-hover);
+    color: #000000;
 }
 
 .btn-secondary {
@@ -208,9 +199,8 @@ footer {
 }
 
 .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-color: var(--secondary);
-    box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-hover);
 }
 
 .btn-danger {
@@ -246,10 +236,9 @@ footer {
     display: block;
     width: 4rem;
     height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    background: var(--text-primary);
     border-radius: 2px;
     margin-top: 0.5rem;
-    box-shadow: 0 0 10px rgba(192, 132, 252, 0.6);
 }
 
 /* Card layout & Grid */
@@ -870,9 +859,7 @@ table.admin-table tr:hover td {
 .hero-section {
     width: 100%;
     height: 380px;
-    background-image: linear-gradient(rgba(9, 9, 21, 0.4), rgba(9, 9, 21, 0.85)), url('../hero.jpg');
-    background-size: cover;
-    background-position: center;
+    background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border);
     display: flex;
@@ -880,7 +867,7 @@ table.admin-table tr:hover td {
     justify-content: center;
     text-align: center;
     margin-bottom: 2.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(192, 132, 252, 0.1);
+    box-shadow: var(--shadow-xl);
     position: relative;
     overflow: hidden;
 }
@@ -895,11 +882,7 @@ table.admin-table tr:hover td {
     font-size: 2.75rem;
     font-weight: 800;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(34, 211, 238, 0.3);
+    color: var(--text-primary);
 }
 
 .hero-subtitle {
@@ -1086,9 +1069,9 @@ html {
     max-width: 450px;
     width: 100%;
     padding: 3rem 2.5rem;
-    background: rgba(15, 15, 35, 0.75);
+    background: rgba(24, 24, 27, 0.85);
     border: 1px solid var(--border);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(192, 132, 252, 0.1);
+    box-shadow: var(--shadow-xl);
     border-radius: var(--radius-lg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1100,11 +1083,7 @@ html {
     font-weight: 800;
     text-align: center;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 15px rgba(192, 132, 252, 0.2);
+    color: var(--text-primary);
 }
 
 .auth-subtitle {
@@ -1149,14 +1128,14 @@ html {
 }
 
 .auth-link {
-    color: var(--secondary);
+    color: var(--text-primary);
     font-weight: 600;
+    text-decoration: underline;
     transition: var(--transition);
 }
 
 .auth-link:hover {
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+    color: var(--text-secondary);
 }
 
 /* User Profile Badge in Header */
@@ -1174,8 +1153,7 @@ html {
 
 .user-menu:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    border-color: var(--secondary);
-    box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+    border-color: var(--border-hover);
 }
 
 .user-name {
@@ -1186,14 +1164,14 @@ html {
 .user-avatar {
     width: 1.5rem;
     height: 1.5rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: var(--text-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.8rem;
     font-weight: bold;
-    color: white;
+    color: var(--background);
 }
 
 @keyframes fadeInScale {

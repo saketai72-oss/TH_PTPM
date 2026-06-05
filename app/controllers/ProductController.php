@@ -15,7 +15,7 @@ class ProductController {
         $products = $this->productModel->getAll($search);
         
         // Ghi nhận hành động vào session
-        SessionLogger::log(empty($search) ? "Xem danh sách hành tinh" : "Tìm kiếm hành tinh với từ khóa: '$search'");
+        SessionLogger::log(empty($search) ? "Xem danh sách đồ chơi" : "Tìm kiếm đồ chơi với từ khóa: '$search'");
         
         // Tải View
         require_once __DIR__ . '/../views/share/header.php';
@@ -28,12 +28,12 @@ class ProductController {
         $product = $this->productModel->getById($id);
         
         if (!$product) {
-            $_SESSION['error'] = "Không tìm thấy hành tinh yêu cầu.";
+            $_SESSION['error'] = "Không tìm thấy đồ chơi yêu cầu.";
             header("Location: " . BASE_PATH . "/product");
             exit();
         }
 
-        SessionLogger::log("Xem chi tiết hành tinh: " . $product['name']);
+        SessionLogger::log("Xem chi tiết đồ chơi: " . $product['name']);
 
         require_once __DIR__ . '/../views/share/header.php';
         require_once __DIR__ . '/../views/product/show.php';
@@ -75,12 +75,12 @@ class ProductController {
 
             if (!empty($name) && $price > 0 && $category_id > 0 && $stock_quantity >= 0) {
                 if ($this->productModel->create($name, $description, $price, $imageName, $category_id, $stock_quantity)) {
-                    SessionLogger::log("Thêm mới hành tinh thành công: " . $name);
-                    $_SESSION['success'] = "Thêm hành tinh thành công!";
+                    SessionLogger::log("Thêm mới đồ chơi thành công: " . $name);
+                    $_SESSION['success'] = "Thêm đồ chơi thành công!";
                     header("Location: " . BASE_PATH . "/product");
                     exit();
                 } else {
-                    $_SESSION['error'] = "Đã xảy ra lỗi khi lưu hành tinh.";
+                    $_SESSION['error'] = "Đã xảy ra lỗi khi lưu đồ chơi.";
                 }
             } else {
                 $_SESSION['error'] = "Vui lòng nhập đầy đủ thông tin bắt buộc và số lượng hợp lệ.";
@@ -140,12 +140,12 @@ class ProductController {
 
             if (!empty($name) && $price > 0 && $category_id > 0 && $stock_quantity >= 0) {
                 if ($this->productModel->update($id, $name, $description, $price, $imageName, $category_id, $stock_quantity)) {
-                    SessionLogger::log("Cập nhật thông tin hành tinh: " . $name);
-                    $_SESSION['success'] = "Cập nhật hành tinh thành công!";
+                    SessionLogger::log("Cập nhật thông tin đồ chơi: " . $name);
+                    $_SESSION['success'] = "Cập nhật đồ chơi thành công!";
                     header("Location: " . BASE_PATH . "/product");
                     exit();
                 } else {
-                    $_SESSION['error'] = "Đã xảy ra lỗi khi cập nhật thông tin hành tinh.";
+                    $_SESSION['error'] = "Đã xảy ra lỗi khi cập nhật thông tin đồ chơi.";
                 }
             } else {
                 $_SESSION['error'] = "Vui lòng điền đầy đủ các thông tin bắt buộc và số lượng hợp lệ.";
@@ -169,9 +169,9 @@ class ProductController {
 
         $product = $this->productModel->getById($id);
         if ($product) {
-            // Kiểm tra xem hành tinh đã từng được đặt hàng chưa
+            // Kiểm tra xem sản phẩm đã từng được đặt hàng chưa
             if ($this->productModel->isOrdered($id)) {
-                $_SESSION['error'] = "Không thể xóa hành tinh <strong>\"" . htmlspecialchars($product['name']) . "\"</strong> vì đã có đơn đặt hàng liên kết với hành tinh này.";
+                $_SESSION['error'] = "Không thể xóa sản phẩm <strong>\"" . htmlspecialchars($product['name']) . "\"</strong> vì đã có đơn đặt hàng liên kết.";
                 header("Location: " . BASE_PATH . "/product");
                 exit();
             }
@@ -185,13 +185,13 @@ class ProductController {
             }
             
             if ($this->productModel->delete($id)) {
-                SessionLogger::log("Xóa hành tinh: " . $product['name']);
-                $_SESSION['success'] = "Xóa hành tinh thành công!";
+                SessionLogger::log("Xóa đồ chơi: " . $product['name']);
+                $_SESSION['success'] = "Xóa đồ chơi thành công!";
             } else {
-                $_SESSION['error'] = "Không thể xóa hành tinh.";
+                $_SESSION['error'] = "Không thể xóa đồ chơi.";
             }
         } else {
-            $_SESSION['error'] = "Không tìm thấy hành tinh để xóa.";
+            $_SESSION['error'] = "Không tìm thấy đồ chơi để xóa.";
         }
         
         header("Location: " . BASE_PATH . "/product");
