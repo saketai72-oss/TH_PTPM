@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($pageTitle) ? $pageTitle . " - RenderToys" : "RenderToys - Cửa hàng đồ chơi trẻ em"; ?></title>
+    <title><?php echo isset($pageTitle) ? $pageTitle . " - ToysStore" : "ToysStore - Cửa hàng đồ chơi trẻ em"; ?></title>
     <!-- Nhúng Style CSS -->
     <link rel="stylesheet" href="<?php echo BASE_PATH; ?>/public/css/style.css">
 </head>
@@ -13,7 +13,7 @@
         <div class="nav-container">
             <a href="<?php echo BASE_PATH; ?>/product" class="logo">
                 <div class="logo-icon">🧸</div>
-                RenderToys
+                ToysStore
             </a>
             
             <!-- Thanh tìm kiếm sản phẩm nhanh -->
