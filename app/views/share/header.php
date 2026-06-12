@@ -40,6 +40,7 @@
                 $isCategoryModule = isset($reqParts[0]) && strtolower($reqParts[0]) === 'category';
                 $isCartModule = isset($reqParts[0]) && strtolower($reqParts[0]) === 'cart';
                 $isHistoryModule = isset($reqParts[0]) && strtolower($reqParts[0]) === 'history';
+                $isApiModule = isset($reqParts[0]) && strtolower($reqParts[0]) === 'api';
                 
                 // Tính số lượng trong giỏ hàng
                 $cartCount = 0;
@@ -48,12 +49,15 @@
                 }
             ?>
             <div class="nav-links">
-                <a href="<?php echo BASE_PATH; ?>/product" class="nav-link <?php echo (!$isCategoryModule && !$isCartModule && !$isHistoryModule) ? 'active' : ''; ?>">Đồ chơi</a>
+                <a href="<?php echo BASE_PATH; ?>/product" class="nav-link <?php echo (!$isCategoryModule && !$isCartModule && !$isHistoryModule && !$isApiModule) ? 'active' : ''; ?>">Đồ chơi</a>
                 <a href="<?php echo BASE_PATH; ?>/category" class="nav-link <?php echo $isCategoryModule ? 'active' : ''; ?>">Danh mục</a>
                 <a href="<?php echo BASE_PATH; ?>/cart" class="nav-link <?php echo $isCartModule ? 'active' : ''; ?>">
                     Giỏ hàng<?php if ($cartCount > 0): ?><span class="badge-cart-count"><?php echo $cartCount; ?></span><?php endif; ?>
                 </a>
                 <a href="<?php echo BASE_PATH; ?>/history" class="nav-link <?php echo $isHistoryModule ? 'active' : ''; ?>">Lịch sử</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="<?php echo BASE_PATH; ?>/api" class="nav-link <?php echo $isApiModule ? 'active' : ''; ?>">API Sandbox</a>
+                <?php endif; ?>
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>

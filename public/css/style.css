@@ -1,24 +1,25 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* CSS Variables for Premium Monochrome Theme (White, Black, Grey) */
+/* CSS Variables for Premium Vibrant Color Theme (Purple, Cyan, Zinc) */
 :root {
-    --primary: #ffffff;        /* White primary elements */
-    --primary-hover: #f4f4f5;  /* Off-white on hover */
-    --primary-light: rgba(255, 255, 255, 0.08);
-    --secondary: #27272a;      /* Dark Zinc/Grey */
+    --primary: #8b5cf6;        /* Vibrant Purple/Violet */
+    --primary-hover: #7c3aed;  /* Darker Violet on hover */
+    --primary-light: rgba(139, 92, 246, 0.15);
+    --secondary: #06b6d4;      /* Vibrant Cyan */
+    --secondary-hover: #0891b2; /* Darker Cyan */
     --background: #09090b;     /* Deep Zinc Dark Background */
     --surface: #18181b;        /* Zinc Card/Panel Background */
     --text-primary: #fafafa;   
-    --text-secondary: #a1a1aa; /* Light Grey Text */
-    --text-muted: #71717a;     /* Muted Grey Text */
-    --border: rgba(255, 255, 255, 0.08); 
-    --border-hover: rgba(255, 255, 255, 0.25);
-    --success: #ffffff;        
-    --danger: #ef4444;         
-    --warning: #f59e0b;        
+    --text-secondary: #d4d4d8; /* Light Grey Text (Lighter for contrast) */
+    --text-muted: #a1a1aa;     /* Muted Grey Text (Lighter for contrast) */
+    --border: rgba(139, 92, 246, 0.15); 
+    --border-hover: rgba(139, 92, 246, 0.35);
+    --success: #10b981;        /* Vibrant Green */
+    --danger: #ef4444;         /* Vibrant Red */
+    --warning: #f59e0b;        /* Vibrant Orange */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    --shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
     --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.7);
     --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.8);
     --radius-sm: 6px;
@@ -83,12 +84,12 @@ header {
 .logo-icon {
     width: 2rem;
     height: 2rem;
-    background: var(--text-primary);
+    background: var(--primary);
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--background);
+    color: #ffffff;
     font-weight: 800;
     font-size: 1.1rem;
 }
@@ -181,7 +182,7 @@ footer {
 
 .btn-primary {
     background: var(--primary);
-    color: #000000;
+    color: #ffffff;
     box-shadow: var(--shadow-sm);
 }
 
@@ -189,7 +190,7 @@ footer {
     transform: translateY(-2px);
     box-shadow: var(--shadow);
     background: var(--primary-hover);
-    color: #000000;
+    color: #ffffff;
 }
 
 .btn-secondary {
