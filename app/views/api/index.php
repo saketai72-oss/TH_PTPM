@@ -22,7 +22,8 @@
             <h3 class="panel-title">Endpoints và Tham số</h3>
             
             <!-- Endpoint selector tabs -->
-            <div class="endpoint-tabs">
+            <h4 style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Sản phẩm (Products)</h4>
+            <div class="endpoint-tabs" style="margin-bottom: 1.25rem;">
                 <button class="tab-btn active" data-endpoint="get-list" data-method="GET" data-path="/api/product">
                     <span class="badge badge-get">GET</span> /product
                 </button>
@@ -37,6 +38,25 @@
                 </button>
                 <button class="tab-btn" data-endpoint="delete-remove" data-method="DELETE" data-path="/api/product/{id}">
                     <span class="badge badge-delete">DEL</span> /product/{id}
+                </button>
+            </div>
+
+            <h4 style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Danh mục (Categories)</h4>
+            <div class="endpoint-tabs">
+                <button class="tab-btn" data-endpoint="cat-get-list" data-method="GET" data-path="/api/category">
+                    <span class="badge badge-get">GET</span> /category
+                </button>
+                <button class="tab-btn" data-endpoint="cat-get-detail" data-method="GET" data-path="/api/category/{id}">
+                    <span class="badge badge-get">GET</span> /category/{id}
+                </button>
+                <button class="tab-btn" data-endpoint="cat-post-create" data-method="POST" data-path="/api/category">
+                    <span class="badge badge-post">POST</span> /category
+                </button>
+                <button class="tab-btn" data-endpoint="cat-put-update" data-method="PUT" data-path="/api/category/{id}">
+                    <span class="badge badge-put">PUT</span> /category/{id}
+                </button>
+                <button class="tab-btn" data-endpoint="cat-delete-remove" data-method="DELETE" data-path="/api/category/{id}">
+                    <span class="badge badge-delete">DEL</span> /category/{id}
                 </button>
             </div>
 
@@ -97,6 +117,19 @@
                             <label class="form-label" for="param-image">Tên tệp hình ảnh (image)</label>
                             <input type="text" id="param-image" class="form-control" placeholder="Ví dụ: rubik.jpg (hoặc để trống)">
                             <small class="form-help-text">Gợi ý ảnh mẫu có sẵn: Sao Thổ.jpg, Sao Hải Vương.jpg, Sao Thiên Vương.jpg</small>
+                        </div>
+                    </div>
+
+                    <!-- Fields for POST and PUT (Category) -->
+                    <div class="input-group-cat-fields" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label" for="param-cat-name">Tên danh mục (name) <span class="required">*</span></label>
+                            <input type="text" id="param-cat-name" class="form-control" placeholder="Ví dụ: Đồ chơi công nghệ học tập">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="param-cat-description">Mô tả danh mục (description)</label>
+                            <textarea id="param-cat-description" class="form-control" placeholder="Nhập mô tả cho nhóm danh mục..."></textarea>
                         </div>
                     </div>
 
@@ -391,6 +424,10 @@
         let activeEndpoint = "get-list";
         let activeMethod = "GET";
         let basePath = "<?php echo BASE_PATH; ?>";
+        
+        const catFieldsGroup = document.querySelector(".input-group-cat-fields");
+        const idLabel = document.querySelector(".input-group-id .form-label");
+        const idHelp = document.querySelector(".input-group-id .form-help-text");
 
         // Xử lý chuyển tab Endpoint
         tabs.forEach(tab => {
@@ -404,21 +441,33 @@
                 activeEndpoint = this.getAttribute("data-endpoint");
                 activeMethod = this.getAttribute("data-method");
                 
+                // Cập nhật nhãn label tùy theo đối tượng
+                if (activeEndpoint.startsWith("cat-")) {
+                    idLabel.innerHTML = 'ID danh mục (Category ID) <span class="required">*</span>';
+                    idHelp.textContent = 'ID của danh mục trong cơ sở dữ liệu để xem chi tiết, chỉnh sửa hoặc xóa.';
+                } else {
+                    idLabel.innerHTML = 'ID sản phẩm (Product ID) <span class="required">*</span>';
+                    idHelp.textContent = 'ID của sản phẩm trong cơ sở dữ liệu để xem chi tiết, chỉnh sửa hoặc xóa.';
+                }
+                
                 // Hiện/Ẩn các trường tương ứng với endpoint được chọn
                 if (activeEndpoint === "get-list") {
                     idInputGroup.style.display = "none";
                     searchInputGroup.style.display = "block";
                     bodyFieldsGroup.style.display = "none";
+                    catFieldsGroup.style.display = "none";
                 } 
-                else if (activeEndpoint === "get-detail") {
+                else if (activeEndpoint === "get-detail" || activeEndpoint === "delete-remove") {
                     idInputGroup.style.display = "block";
                     searchInputGroup.style.display = "none";
                     bodyFieldsGroup.style.display = "none";
+                    catFieldsGroup.style.display = "none";
                 } 
                 else if (activeEndpoint === "post-create") {
                     idInputGroup.style.display = "none";
                     searchInputGroup.style.display = "none";
                     bodyFieldsGroup.style.display = "block";
+                    catFieldsGroup.style.display = "none";
                     
                     // Reset field values to default suggestions for POST
                     document.getElementById("param-name").value = "Đồ chơi Lego Tàu Vũ Trụ NASA";
@@ -432,6 +481,7 @@
                     idInputGroup.style.display = "block";
                     searchInputGroup.style.display = "none";
                     bodyFieldsGroup.style.display = "block";
+                    catFieldsGroup.style.display = "none";
                     
                     // Trộn giá trị thử nghiệm PUT
                     document.getElementById("param-name").value = "Đồ chơi Lego Tàu Vũ Trụ NASA (Cập nhật)";
@@ -441,10 +491,36 @@
                     document.getElementById("param-category").value = "1";
                     document.getElementById("param-image").value = "Sao Thiên Vương.jpg";
                 } 
-                else if (activeEndpoint === "delete-remove") {
+                // Category Endpoints
+                else if (activeEndpoint === "cat-get-list") {
+                    idInputGroup.style.display = "none";
+                    searchInputGroup.style.display = "none";
+                    bodyFieldsGroup.style.display = "none";
+                    catFieldsGroup.style.display = "none";
+                }
+                else if (activeEndpoint === "cat-get-detail" || activeEndpoint === "cat-delete-remove") {
                     idInputGroup.style.display = "block";
                     searchInputGroup.style.display = "none";
                     bodyFieldsGroup.style.display = "none";
+                    catFieldsGroup.style.display = "none";
+                }
+                else if (activeEndpoint === "cat-post-create") {
+                    idInputGroup.style.display = "none";
+                    searchInputGroup.style.display = "none";
+                    bodyFieldsGroup.style.display = "none";
+                    catFieldsGroup.style.display = "block";
+                    
+                    document.getElementById("param-cat-name").value = "Đồ chơi giáo dục STEM";
+                    document.getElementById("param-cat-description").value = "Mô hình robot khoa học và bộ thí nghiệm giáo dục sớm cho trẻ học hỏi.";
+                }
+                else if (activeEndpoint === "cat-put-update") {
+                    idInputGroup.style.display = "block";
+                    searchInputGroup.style.display = "none";
+                    bodyFieldsGroup.style.display = "none";
+                    catFieldsGroup.style.display = "block";
+                    
+                    document.getElementById("param-cat-name").value = "Đồ chơi giáo dục STEM (Cập nhật)";
+                    document.getElementById("param-cat-description").value = "Mô hình khoa học được cập nhật thông tin qua API.";
                 }
             });
         });
@@ -464,14 +540,22 @@
             responseTimeBadge.style.display = "none";
 
             // 1. Tạo URL request
-            let url = window.location.origin + basePath + "/api/product";
+            let url = window.location.origin + basePath;
             const idVal = document.getElementById("param-id").value;
             const searchVal = document.getElementById("param-search").value;
 
-            if (activeEndpoint === "get-list" && searchVal.trim() !== "") {
-                url += "?search=" + encodeURIComponent(searchVal.trim());
-            } else if (activeEndpoint === "get-detail" || activeEndpoint === "put-update" || activeEndpoint === "delete-remove") {
-                url += "/" + parseInt(idVal);
+            if (activeEndpoint.startsWith("cat-")) {
+                url += "/api/category";
+                if (activeEndpoint === "cat-get-detail" || activeEndpoint === "cat-put-update" || activeEndpoint === "cat-delete-remove") {
+                    url += "/" + parseInt(idVal);
+                }
+            } else {
+                url += "/api/product";
+                if (activeEndpoint === "get-list" && searchVal.trim() !== "") {
+                    url += "?search=" + encodeURIComponent(searchVal.trim());
+                } else if (activeEndpoint === "get-detail" || activeEndpoint === "put-update" || activeEndpoint === "delete-remove") {
+                    url += "/" + parseInt(idVal);
+                }
             }
             
             requestUrlDisplay.textContent = activeMethod + " " + url;
@@ -487,14 +571,22 @@
             // Tạo request body cho POST/PUT
             if (activeMethod === "POST" || activeMethod === "PUT") {
                 options.headers["Content-Type"] = "application/json; charset=utf-8";
-                const bodyData = {
-                    name: document.getElementById("param-name").value,
-                    description: document.getElementById("param-description").value,
-                    price: parseFloat(document.getElementById("param-price").value),
-                    stock_quantity: parseInt(document.getElementById("param-stock").value),
-                    category_id: parseInt(document.getElementById("param-category").value),
-                    image: document.getElementById("param-image").value
-                };
+                let bodyData;
+                if (activeEndpoint.startsWith("cat-")) {
+                    bodyData = {
+                        name: document.getElementById("param-cat-name").value,
+                        description: document.getElementById("param-cat-description").value
+                    };
+                } else {
+                    bodyData = {
+                        name: document.getElementById("param-name").value,
+                        description: document.getElementById("param-description").value,
+                        price: parseFloat(document.getElementById("param-price").value),
+                        stock_quantity: parseInt(document.getElementById("param-stock").value),
+                        category_id: parseInt(document.getElementById("param-category").value),
+                        image: document.getElementById("param-image").value
+                    };
+                }
                 options.body = JSON.stringify(bodyData);
             }
 

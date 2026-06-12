@@ -285,4 +285,227 @@ class ApiController {
         }
         return (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin');
     }
+
+    // RESTful API Endpoint cho Danh mục (Categories): /api/category/{id}
+    public function category($id = null) {
+        // Thiết lập header trả về định dạng JSON
+        header('Content-Type: application/json; charset=utf-8');
+        
+        $method = $_SERVER['REQUEST_METHOD'];
+        
+        switch ($method) {
+            case 'GET':
+                if ($id !== null) {
+                    $this->getCategoryDetail($id);
+                } else {
+                    $this->getCategoriesList();
+                }
+                break;
+                
+            case 'POST':
+                $this->createCategory();
+                break;
+                
+            case 'PUT':
+                $this->updateCategory($id);
+                break;
+                
+            case 'DELETE':
+                $this->deleteCategory($id);
+                break;
+                
+            default:
+                http_response_code(405);
+                echo json_encode([
+                    'success' => false,
+                    'message' => "Phương thức $method không được hỗ trợ cho endpoint này."
+                ], JSON_UNESCAPED_UNICODE);
+                break;
+        }
+    }
+
+    // Lấy danh sách danh mục (GET /api/category)
+    private function getCategoriesList() {
+        $categories = $this->categoryModel->getAll();
+        
+        SessionLogger::log("API: Xem danh sách danh mục");
+        
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'count' => count($categories),
+            'data' => $categories
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+    // Lấy chi tiết một danh mục (GET /api/category/{id})
+    private function getCategoryDetail($id) {
+        $category = $this->categoryModel->getById($id);
+        
+        if (!$category) {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'message' => "Không tìm thấy danh mục có ID = $id"
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+        
+        SessionLogger::log("API: Xem chi tiết danh mục: " . $category['name']);
+        
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'data' => $category
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+    // Thêm mới danh mục (POST /api/category)
+    private function createCategory() {
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!$input) {
+            $input = $_POST;
+        }
+
+        $name = isset($input['name']) ? trim($input['name']) : '';
+        $description = isset($input['description']) ? trim($input['description']) : '';
+
+        if (empty($name)) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ. Tên danh mục (name) không được để trống.'
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        if ($this->categoryModel->create($name, $description)) {
+            SessionLogger::log("API: Thêm mới danh mục thành công: " . $name);
+            
+            http_response_code(201);
+            echo json_encode([
+                'success' => true,
+                'message' => "Thêm danh mục \"$name\" thành công!",
+                'data' => [
+                    'name' => $name,
+                    'description' => $description
+                ]
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi hệ thống khi lưu trữ danh mục.'
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    // Cập nhật danh mục (PUT /api/category/{id})
+    private function updateCategory($id) {
+        if ($id === null || $id === '') {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Thiếu ID danh mục cần cập nhật.'
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        $category = $this->categoryModel->getById($id);
+        if (!$category) {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'message' => "Không tìm thấy danh mục có ID = $id để cập nhật."
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!$input) {
+            parse_str(file_get_contents('php://input'), $input);
+        }
+
+        $name = isset($input['name']) ? trim($input['name']) : $category['name'];
+        $description = isset($input['description']) ? trim($input['description']) : $category['description'];
+
+        if (empty($name)) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Tên danh mục không được để trống.'
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        if ($this->categoryModel->update($id, $name, $description)) {
+            SessionLogger::log("API: Cập nhật danh mục: " . $name);
+            
+            http_response_code(200);
+            echo json_encode([
+                'success' => true,
+                'message' => "Cập nhật danh mục \"$name\" thành công!",
+                'data' => [
+                    'id' => $id,
+                    'name' => $name,
+                    'description' => $description
+                ]
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi hệ thống khi cập nhật danh mục.'
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    // Xóa danh mục (DELETE /api/category/{id})
+    private function deleteCategory($id) {
+        if ($id === null || $id === '') {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Thiếu ID danh mục cần xóa.'
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        $category = $this->categoryModel->getById($id);
+        if (!$category) {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'message' => "Không tìm thấy danh mục có ID = $id để xóa."
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        // Ràng buộc số lượng sản phẩm liên kết
+        $productCount = $this->categoryModel->countProducts($id);
+        if ($productCount > 0) {
+            http_response_code(409); // Conflict
+            echo json_encode([
+                'success' => false,
+                'message' => "Không thể xóa danh mục \"{$category['name']}\" vì đang chứa {$productCount} sản phẩm liên kết."
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        if ($this->categoryModel->delete($id)) {
+            SessionLogger::log("API: Xóa danh mục: " . $category['name']);
+            
+            http_response_code(200);
+            echo json_encode([
+                'success' => true,
+                'message' => "Xóa danh mục \"{$category['name']}\" thành công!"
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi hệ thống khi thực hiện xóa danh mục.'
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
 }
